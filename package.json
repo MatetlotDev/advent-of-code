@@ -1,0 +1,9 @@
+{
+  "name": "advent-of-code",
+  "module": "index.js",
+  "type": "module",
+  "devDependencies": {},
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  }
+}
