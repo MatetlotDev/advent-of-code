@@ -1,31 +1,62 @@
 import fs from "fs";
 
-fs.readFile("./2023/day-1/input.txt", (err, data) => {
-  if (err) {
-    console.error("Error reading file:", err);
-    return;
-  }
+export const day1 = (step) => {
+  fs.readFile("./2023/day-1/input.txt", (err, data) => {
+    if (err) {
+      console.error("Day 1 error :", err);
+      return;
+    }
 
-  // long version
-  // const text = data.toString();
+    if (step === 1) {
+      const sum = data
+        .toString()
+        .split("\n")
+        .map((p) => p.replace(/[^0-9]/g, ""))
+        .map((n) => `${n.slice(0, 1)}${n.slice(n.length - 1, n.length)}`)
+        .reduce((a, b) => Number(b) + Number(a), 0);
 
-  // const arrInText = text.split("\n");
+      console.log("Day 1 - step 1 : ", sum);
+      return;
+    }
 
-  // const onlyNums = arrInText.map((p) => p.replace(/[^0-9]/g, ""));
+    // step 2
+    const possibleNums = [
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+    ];
 
-  // const num1and2 = onlyNums.map(
-  //   (n) => `${n.slice(0, 1)}${n.slice(n.length - 1, n.length)}`
-  // );
+    const replaceTextAsNum = (string) => {
+      let newString = string;
 
-  // const sum = num1and2.reduce((a, b) => Number(b) + Number(a), 0);
+      for (let i = 0; i < newString.length - 1; i++) {
+        possibleNums.forEach((num, idx) => {
+          if (newString.slice(i, i + num.length) === num) {
+            newString = `${newString.slice(0, i)}${idx + 1}${newString.slice(
+              num.length + i,
+              newString.length
+            )}`;
+          }
+        });
+      }
 
-  // short version
-  const sum = data
-    .toString()
-    .split("\n")
-    .map((p) => p.replace(/[^0-9]/g, ""))
-    .map((n) => `${n.slice(0, 1)}${n.slice(n.length - 1, n.length)}`)
-    .reduce((a, b) => Number(b) + Number(a), 0);
+      return newString;
+    };
 
-  console.log("Day 1 answer : ", sum);
-});
+    const sum = data
+      .toString()
+      .split("\n")
+      .map((str) => replaceTextAsNum(str))
+      .map((p) => p.replace(/[^0-9]/g, ""))
+      .map((n) => `${n.slice(0, 1)}${n.slice(n.length - 1, n.length)}`)
+      .reduce((a, b) => Number(b) + Number(a), 0);
+
+    console.log("Day 1 - step 2 : ", sum);
+  });
+};
