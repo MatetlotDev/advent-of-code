@@ -1,6 +1,6 @@
 import fs from "fs";
 
-export const day1 = (step) => {
+const day1 = (step) => {
   fs.readFile("./2023/day-1/input.txt", (err, data) => {
     if (err) {
       console.error("Day 1 error :", err);

@@ -1,6 +1,5 @@
 {
   "name": "advent-of-code",
-  "module": "index.js",
   "type": "module",
   "devDependencies": {},
   "dependencies": {
