@@ -7,19 +7,9 @@ const day3Step1 = () => {
       return;
     }
 
-    const NOT_SYMBOL = ".";
-
     let sum = 0;
 
     const inputInArray = data.toString().split("\n");
-    const LINE_LENGTH = inputInArray[0].length;
-
-    /**
-     * Pour chaque ligne :
-     * - trouver les index où il y a des numéros
-     * - vérifier sur les lignes avant et après aux même index +1 de chaque côté
-     * - si on à un symbol qui n'est pas un numéro ou un '.', on additionne
-     */
 
     inputInArray.forEach((line, idx) => {
       const prevExist = idx - 1 >= 0;
@@ -59,8 +49,9 @@ const day3Step1 = () => {
           return;
         }
         if (
-          /^[^.0-9]+$/.test(line[num.indexes[0]]) ||
-          /^[^.0-9]+$/.test(line[num.indexes[num.indexes.length - 1]])
+          (num.indexes[0] >= 0 && /^[^.0-9]+$/.test(line[num.indexes[0]])) ||
+          (num.indexes[num.indexes.length - 1] <= line.length - 1 &&
+            /^[^.0-9]+$/.test(line[num.indexes[num.indexes.length - 1]]))
         ) {
           sum += num.number;
           return;
@@ -75,10 +66,7 @@ const day3Step1 = () => {
       });
     });
 
-    /**
-     *
-     * There might be some duplicate
-     */
+    console.log(sum);
   });
 };
 
