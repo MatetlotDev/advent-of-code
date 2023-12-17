@@ -1,85 +1,67 @@
-import fs from "fs";
+import { extractInputIntoString } from "../../utils";
 
-const day2Step1 = () => {
-  fs.readFile("./2023/day-2/input.txt", (err, data) => {
-    if (err) {
-      console.error("Day 2 error :", err);
-      return;
-    }
+const inputString = extractInputIntoString("./2023/day-2/input.txt");
 
-    const incorrectIds = [];
+const incorrectIds = [];
 
-    const inArray = data.toString().split("\n");
+const inArray = inputString.split("\n");
 
-    inArray.forEach((str) => {
-      const id = /Game (\d+):/g.exec(str)[1];
-      const rest = str.replace(/Game (\d+):/g, "");
-      const games = rest.split(";");
+// step 1
+inArray.forEach((str) => {
+  const id = /Game (\d+):/g.exec(str)[1];
+  const rest = str.replace(/Game (\d+):/g, "");
+  const games = rest.split(";");
 
-      games.forEach((game) => {
-        const count = { id, blue: 0, red: 0, green: 0 };
-        const byColors = game.split(",").map((e) => e.trim());
+  games.forEach((game) => {
+    const count = { id, blue: 0, red: 0, green: 0 };
+    const byColors = game.split(",").map((e) => e.trim());
 
-        byColors.forEach((g) => {
-          const color = g.split(" ")[1];
-          count[color] = count[color] + Number(g.split(" ")[0]);
-        });
-
-        if (
-          (count.red > 12 || count.green > 13 || count.blue > 14) &&
-          !incorrectIds.includes(id)
-        )
-          incorrectIds.push(count.id);
-      });
+    byColors.forEach((g) => {
+      const color = g.split(" ")[1];
+      count[color] = count[color] + Number(g.split(" ")[0]);
     });
 
-    const arrFull = Array.from(Array(100).keys()).map((i, idx) =>
-      (idx + 1).toString()
-    );
-
-    const sum = arrFull.reduce((a, b) => {
-      if (incorrectIds.includes(b.toString())) {
-        return a;
-      }
-      return a + Number(b);
-    }, 0);
-
-    console.log("Day 2 - step 1 : ", sum);
+    if (
+      (count.red > 12 || count.green > 13 || count.blue > 14) &&
+      !incorrectIds.includes(id)
+    )
+      incorrectIds.push(count.id);
   });
-};
+});
 
-const day2Step2 = () => {
-  fs.readFile("./2023/day-2/input.txt", (err, data) => {
-    if (err) {
-      console.error("Day 2 error :", err);
-      return;
-    }
+const arrFull = Array.from(Array(100).keys()).map((i, idx) =>
+  (idx + 1).toString()
+);
 
-    const inArray = data.toString().split("\n");
+const sum = arrFull.reduce((a, b) => {
+  if (incorrectIds.includes(b.toString())) {
+    return a;
+  }
+  return a + Number(b);
+}, 0);
 
-    const multiply = inArray.map((str) => {
-      const count = { blue: 0, red: 0, green: 0 };
+console.log("Day 2 - step 1 : ", sum);
 
-      const rest = str.replace(/Game (\d+):/g, "");
-      const games = rest.split(";");
+// step 2
+const multiply = inArray.map((str) => {
+  const count = { blue: 0, red: 0, green: 0 };
 
-      games.forEach((game) => {
-        const byColors = game.split(",").map((e) => e.trim());
+  const rest = str.replace(/Game (\d+):/g, "");
+  const games = rest.split(";");
 
-        byColors.forEach((g) => {
-          const color = g.split(" ")[1];
-          const num = Number(g.split(" ")[0]);
-          count[color] = count[color] > num ? count[color] : num;
-        });
-      });
+  games.forEach((game) => {
+    const byColors = game.split(",").map((e) => e.trim());
 
-      return (count.red || 1) * (count.blue || 1) * (count.green || 1);
+    byColors.forEach((g) => {
+      const color = g.split(" ")[1];
+      const num = Number(g.split(" ")[0]);
+      count[color] = count[color] > num ? count[color] : num;
     });
-
-    const sum = multiply.reduce((a, b) => a + b, 0);
-
-    console.log("Day 2 - step 2 : ", sum);
   });
-};
 
-day2Step2();
+  return (count.red || 1) * (count.blue || 1) * (count.green || 1);
+});
+
+const sum2 = multiply.reduce((a, b) => a + b, 0);
+
+console.log("Day 2 - step 2 : ", sum2);
