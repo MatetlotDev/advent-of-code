@@ -1,8 +1,11 @@
 {
   "name": "advent-of-code",
   "type": "module",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.10.7"
+  },
   "dependencies": {
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "typescript": "^5.7.3"
   }
 }
